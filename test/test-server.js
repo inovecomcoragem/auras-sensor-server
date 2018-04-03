@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 describe("Arduino server", function() {
   describe("route /get-light", function() {
     beforeEach(function() {
-      server.light = [1, 1];
+      server.light = 1;
     });
 
     it("returns current state of globe", function(done) {
@@ -26,14 +26,14 @@ describe("Arduino server", function() {
 
   describe("route /set-touch", function() {
     beforeEach(function() {
-      server.touch = [0, 0];
+      server.touch = 0;
     });
 
     it("changes state of touch", function(done) {
       chai.request(app).get('/set-touch/'+1).end(function(err, res) {
         if (err) done(err);
         res.should.have.status(200);
-        server.touch[0].should.equal(1);
+        server.touch.should.equal(1);
         done();
       });
     });
@@ -43,7 +43,7 @@ describe("Arduino server", function() {
 describe("App server", function() {
   describe("route /get-touch", function() {
     beforeEach(function() {
-      server.touch = [1, 1];
+      server.touch = 1;
     });
 
     it("returns current state of touch", function(done) {
@@ -58,14 +58,14 @@ describe("App server", function() {
 
   describe("route /set-light", function() {
     beforeEach(function() {
-      server.light = [0, 0];
+      server.light = 0;
     });
 
     it("changes state of light", function(done) {
       chai.request(app).get('/set-light/'+1).end(function(err, res) {
         if (err) done(err);
         res.should.have.status(200);
-        server.light[0].should.equal(1);
+        server.light.should.equal(1);
         done();
       });
     });
