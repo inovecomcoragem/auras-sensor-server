@@ -16,33 +16,33 @@ server.sendTextResponse = function(res, code, text) {
 }
 
 expressApp.get('/get-touch', function(req, res) {
+  server.sendTextResponse(res, 200, server.touch);
+
   var ip = getIp(req);
   logExceptOnTest("get-touch/ from: " + ip);
-
-  server.sendTextResponse(res, 200, server.touch);
 });
 
 expressApp.get('/get-light', function(req, res) {
+  server.sendTextResponse(res, 200, server.light);
+
   var ip = getIp(req);
   logExceptOnTest("get-light/ from: " + ip);
-
-  server.sendTextResponse(res, 200, server.light);
 });
 
 expressApp.get('/set-touch/:value', function(req, res) {
-  var ip = getIp(req);
-  logExceptOnTest("set-touch/ from: " + ip);
-
   server.touch = parseInt(req.params.value || 0);
   server.sendTextResponse(res, 200, server.touch);
+
+  var ip = getIp(req);
+  logExceptOnTest("set-touch/" + server.touch + " from: " + ip);
 });
 
 expressApp.get('/set-light/:value', function(req, res) {
-  var ip = getIp(req);
-  logExceptOnTest("set-light/ from: " + ip);
-
   server.light = parseInt(req.params.value || 0);
   server.sendTextResponse(res, 200, server.light);
+
+  var ip = getIp(req);
+  logExceptOnTest("set-light/" + server.light + " from: " + ip);
 });
 
 expressApp.get('*', function (req, res) {
