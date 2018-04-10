@@ -55,6 +55,26 @@ expressApp.get('/set-light/:value', function(req, res) {
   logExceptOnTest("set-light/" + server.light + " from: " + ip);
 });
 
+expressApp.get('/user/:code', function(req, res) {
+  var userCode = parseInt(req.params.code || 0);
+  if(userCode == '123456') {
+    var user = {
+      email: 'foo@bar.com',
+      name: 'John Wayne',
+      company: 'Heavy Industries',
+      code: '123456',
+      authorization: false
+    };
+
+    server.sendTextResponse(res, 200, JSON.stringify(user));
+  } else {
+    server.sendTextResponse(res, 404, "User Not Found");
+  }
+
+  var ip = getIp(req);
+  logExceptOnTest("user/" + userCode + " from: " + ip);
+});
+
 expressApp.get('*', function (req, res) {
   var ip = getIp(req);
   logExceptOnTest("404 from: " + ip + " at: " + req.params[0]);
