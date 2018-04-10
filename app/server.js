@@ -55,15 +55,13 @@ expressApp.get('/set-light/:value', function(req, res) {
   logExceptOnTest("set-light/" + server.light + " from: " + ip);
 });
 
-expressApp.get('/user/:code', function(req, res) {
+expressApp.get('/person/:code/results', function(req, res) {
   var userCode = parseInt(req.params.code || 0);
   if(userCode == '123456') {
     var user = {
       email: 'foo@bar.com',
       name: 'John Wayne',
-      company: 'Heavy Industries',
-      code: '123456',
-      authorization: false
+      profile: 2
     };
 
     server.sendTextResponse(res, 200, JSON.stringify(user));
