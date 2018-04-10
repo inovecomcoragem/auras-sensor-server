@@ -2,3 +2,4 @@ node_modules
 npm*log
 .DS*
 app/bin
+.env

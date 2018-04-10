@@ -1,24 +1,24 @@
 var server = {};
 
 var express = require('express');
+var cors = require('cors');
+var dotenv = require('dotenv');
 
-var port = 8000;
+dotenv.load();
+
+var port = process.env.PORT || 8000;
 var expressApp = express();
 server.app = require('http').createServer(expressApp);
 server.request = require('request');
 
+var corsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  optionsSuccessStatus: 200
+}
+expressApp.use(cors(corsOptions));
+
 server.light = 0;
 server.touch = 0;
-
-function simulateBrowserClientBehavior_DeleteThisLater() {
-  if(server.touch == 1) {
-    setTimeout(function() {
-      logExceptOnTest("resetting");
-      server.light = 0;
-      server.touch = 0;
-    }, 5000);
-  }
-}
 
 server.sendTextResponse = function(res, code, text) {
   res.set('Content-Type', 'text/plain');
@@ -42,8 +42,6 @@ expressApp.get('/get-light', function(req, res) {
 expressApp.get('/set-touch/:value', function(req, res) {
   server.touch = parseInt(req.params.value || 0);
   server.sendTextResponse(res, 200, server.touch);
-
-  simulateBrowserClientBehavior_DeleteThisLater();
 
   var ip = getIp(req);
   logExceptOnTest("set-touch/" + server.touch + " from: " + ip);
