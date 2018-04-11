@@ -10,7 +10,7 @@ var flickrAuth = Flickr.OAuth.createPlugin(
 );
 
 var flickrRest = new Flickr(process.env.FLICKR_CONSUMER_KEY);
-var tempFile = __dirname + '/../temp.png';
+var tempFile = __dirname + '/../temp.jpg';
 
 function FlickrService(data) {
 
