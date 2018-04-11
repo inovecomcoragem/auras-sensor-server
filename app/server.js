@@ -1,21 +1,25 @@
+require('dotenv').load();
+
 var server = {};
-
 var express = require('express');
+var bodyParser = require("body-parser");
 var cors = require('cors');
-var dotenv = require('dotenv');
+var expressApp = express();
+var FlickrService = require('./flickr-service');
 
-dotenv.load();
+server.request = require('request');
+server.app = require('http').createServer(expressApp);
 
 var port = process.env.PORT || 8000;
-var expressApp = express();
-server.app = require('http').createServer(expressApp);
-server.request = require('request');
 
 var corsOptions = {
   origin: process.env.CORS_ORIGIN,
   optionsSuccessStatus: 200
 }
+
 expressApp.use(cors(corsOptions));
+expressApp.use(bodyParser.urlencoded({ extended: false }));
+expressApp.use(bodyParser.json());
 
 server.light = 0;
 server.touch = 0;
@@ -71,6 +75,15 @@ expressApp.get('/person/:code/results', function(req, res) {
 
   var ip = getIp(req);
   logExceptOnTest("user/" + userCode + " from: " + ip);
+});
+
+expressApp.post('/person/:code/photo', function(req, res) {
+  req.body.code = req.params.code;
+
+  var flickerService = new FlickrService(req.body);
+  flickerService.updatePersonData(function(data){
+    server.sendTextResponse(res, 200, JSON.stringify(data));
+  });
 });
 
 expressApp.get('*', function (req, res) {

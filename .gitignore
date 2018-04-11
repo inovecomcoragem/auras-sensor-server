@@ -3,3 +3,5 @@ npm*log
 .DS*
 app/bin
 .env
+flickr_oauth.js
+out.gif
