@@ -10,11 +10,12 @@ var flickrAuth = Flickr.OAuth.createPlugin(
 );
 
 var flickrRest = new Flickr(process.env.FLICKR_CONSUMER_KEY);
-var tempFile = __dirname + "/../out.gif";
+var tempFile = __dirname + '/../temp.png';
 
 function FlickrService(data) {
+
   this.writeImage = function(cb) {
-    cb(null, tempFile, data.img_string, 'base64');
+    cb(null, tempFile, data.image, 'base64');
   };
 
   this.upload = function(cb) {
@@ -22,9 +23,9 @@ function FlickrService(data) {
       title: data.code
     });
 
-    upload.then(function (res) {
+    upload.then(function(res) {
       cb(null, res.body.photoid._content);
-    }).catch(function (err) {
+    }).catch(function(err) {
       cb(err);
     });
   };
@@ -32,14 +33,15 @@ function FlickrService(data) {
   this.getUrl = function(id, cb) {
     flickrRest.photos.getSizes({
       photo_id: id
-    }).then(function (res) {
+    }).then(function(res) {
       res.body.sizes.size.forEach(function(img) {
         if(img.label.includes('riginal')) {
           data.flickr_url = img.source;
+          data.datetime = new Date();
           cb(null, data);
         }
       });
-    }).catch(function (err) {
+    }).catch(function(err) {
       cb(err);
     });
   };
@@ -52,7 +54,7 @@ function FlickrService(data) {
       this.getUrl
     ], function (err, result) {
       if(err) cb(err);
-      cb(result);
+      cb(null, data);
     });
   };
 }

@@ -18,8 +18,8 @@ var corsOptions = {
 }
 
 expressApp.use(cors(corsOptions));
-expressApp.use(bodyParser.urlencoded({ extended: false }));
-expressApp.use(bodyParser.json());
+expressApp.use(bodyParser.urlencoded({limit: '5mb', extended: false}));
+expressApp.use(bodyParser.json({limit: '5mb'}));
 
 server.light = 0;
 server.touch = 0;
@@ -81,8 +81,12 @@ expressApp.post('/person/:code/photo', function(req, res) {
   req.body.code = req.params.code;
 
   var flickerService = new FlickrService(req.body);
-  flickerService.updatePersonData(function(data){
-    server.sendTextResponse(res, 200, JSON.stringify(data));
+  flickerService.updatePersonData(function(err, data) {
+    if(err) {
+      server.sendTextResponse(res, 500, JSON.stringify(err));
+    } else {
+      server.sendTextResponse(res, 200, JSON.stringify(data));
+    }
   });
 });
 
