@@ -8,7 +8,7 @@ var app = server.app;
 
 chai.use(chaiHttp);
 
-describe("Arduino server", function() {
+describe("Sensor server", function() {
   describe("route /get-light", function() {
     beforeEach(function() {
       server.light = 1;
