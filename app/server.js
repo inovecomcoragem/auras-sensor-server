@@ -11,7 +11,7 @@ server.app = require('http').createServer(expressApp);
 var port = process.env.PORT || 8000;
 
 var corsOptions = {
-  origin: process.env.CORS_ORIGIN,
+  origin: [process.env.CORS_TEST_ORIGIN, process.env.CORS_PROD_ORIGIN],
   optionsSuccessStatus: 200
 }
 
