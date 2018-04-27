@@ -3,6 +3,3 @@ npm*log
 .DS*
 app/bin
 .env
-flickr_oauth.js
-temp.png
-temp.jpg

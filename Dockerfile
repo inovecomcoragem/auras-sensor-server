@@ -7,6 +7,6 @@ RUN mkdir -p /opt/server && cp -a /tmp/node_modules /opt/server/
 WORKDIR /opt/server
 ADD package.json /opt/server/
 ADD .env /opt/server/
-ADD app/*.js /opt/server/app/
+ADD index.js /opt/server/
 
 CMD ["npm", "run", "start"]
